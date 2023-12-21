@@ -2,6 +2,7 @@
 using FilmeAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmeAPI.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    partial class FilmeContextModelSnapshot : ModelSnapshot
+    [Migration("20231221191522_AddEndereco")]
+    partial class AddEndereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,15 +50,14 @@ namespace FilmeAPI.Migrations
 
                     b.Property<string>("Logradouro")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Numero")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Enderecos");
+                    b.ToTable("Endereco");
                 });
 
             modelBuilder.Entity("FilmeAPI.Models.Filme", b =>
@@ -94,7 +96,8 @@ namespace FilmeAPI.Migrations
 
             modelBuilder.Entity("FilmeAPI.Models.Endereco", b =>
                 {
-                    b.Navigation("Cinema");
+                    b.Navigation("Cinema")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
