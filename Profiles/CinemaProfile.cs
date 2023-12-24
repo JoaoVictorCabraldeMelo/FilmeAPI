@@ -10,6 +10,7 @@ public class CinemaProfile : Profile
         CreateMap<CreateCinemaDto, Cinema>();
         CreateMap<UpdateCinemaDto, Cinema>();
         CreateMap<Cinema, UpdateCinemaDto>();
-        CreateMap<Cinema, ReadCinemaDto>();
+        CreateMap<Cinema, ReadCinemaDto>()
+            .ForMember(dto => dto.ReadEnderecoDto, opt => opt.MapFrom(cinema => cinema.Endereco));
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FilmeAPI.Controllers;
 
 [ApiController]
-[Route("cinema")]
+[Route("api/cinema")]
 public class CinemaController : ControllerBase
 {
     private readonly FilmeContext _context;

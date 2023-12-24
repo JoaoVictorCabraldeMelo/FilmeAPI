@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FilmeAPI.Controllers;
 
 [ApiController]
-[Route("endereco")]
+[Route("api/endereco")]
 public class EnderecoController : ControllerBase
 {
     private readonly FilmeContext _context;
