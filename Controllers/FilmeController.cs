@@ -43,11 +43,14 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ReadFilmeDto> TodosFilmes([FromQuery] int pagina = 0, [FromQuery] int tamanho = 50)
+    public IEnumerable<ReadFilmeDto> TodosFilmes([FromQuery] int pagina = 0, [FromQuery] int tamanho = 50, [FromQuery] string? nomeCinema = null)
     {
-        pagina = pagina * 10;
+        if (nomeCinema == null) {
+            pagina = pagina * 10;
 
-        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
+            return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
+        }
+        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema.Nome == nomeCinema)).ToList());
     }
 
     [HttpGet("{id}")]
