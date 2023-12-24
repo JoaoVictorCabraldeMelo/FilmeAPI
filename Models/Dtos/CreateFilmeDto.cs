@@ -16,4 +16,6 @@ public class CreateFilmeDto
   [Range(70, 600, ErrorMessage = "A Duracao deve ser entre 70 min ha 600 min")]
   public int Duracao { get; set; }
 
+  
+
 }

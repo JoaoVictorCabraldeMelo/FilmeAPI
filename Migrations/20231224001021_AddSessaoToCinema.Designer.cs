@@ -3,6 +3,7 @@ using System;
 using FilmeAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmeAPI.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    partial class FilmeContextModelSnapshot : ModelSnapshot
+    [Migration("20231224001021_AddSessaoToCinema")]
+    partial class AddSessaoToCinema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +132,7 @@ namespace FilmeAPI.Migrations
                         .HasForeignKey("CinemaId");
 
                     b.HasOne("FilmeAPI.Models.Filme", "Filme")
-                        .WithMany("Sessoes")
+                        .WithMany("Sessaos")
                         .HasForeignKey("FilmeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -151,7 +154,7 @@ namespace FilmeAPI.Migrations
 
             modelBuilder.Entity("FilmeAPI.Models.Filme", b =>
                 {
-                    b.Navigation("Sessoes");
+                    b.Navigation("Sessaos");
                 });
 #pragma warning restore 612, 618
         }

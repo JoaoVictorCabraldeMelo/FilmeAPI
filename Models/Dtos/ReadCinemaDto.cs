@@ -8,4 +8,7 @@ public class ReadCinemaDto
     public string Nome { get; set; } = string.Empty;
 
     public ReadEnderecoDto? ReadEnderecoDto { get; set; }
+
+    public ICollection<ReadSessaoDto> Sessoes { get; set; }
+
 }

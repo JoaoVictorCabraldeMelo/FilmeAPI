@@ -47,7 +47,7 @@ public class FilmeController : ControllerBase
     {
         pagina = pagina * 10;
 
-        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho));
+        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
     }
 
     [HttpGet("{id}")]
