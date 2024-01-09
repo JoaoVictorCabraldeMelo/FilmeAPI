@@ -5,7 +5,7 @@
 namespace FilmeAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class endereco : Migration
+    public partial class Endereco : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

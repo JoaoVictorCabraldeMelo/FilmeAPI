@@ -9,6 +9,6 @@ public class ReadCinemaDto
 
     public ReadEnderecoDto? ReadEnderecoDto { get; set; }
 
-    public ICollection<ReadSessaoDto> Sessoes { get; set; }
+    public ICollection<ReadSessaoDto> Sessoes { get; set; } = new List<ReadSessaoDto>();
 
 }

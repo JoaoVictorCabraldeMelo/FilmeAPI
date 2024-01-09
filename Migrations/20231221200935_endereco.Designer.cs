@@ -11,7 +11,7 @@ namespace FilmeAPI.Migrations
 {
     [DbContext(typeof(FilmeContext))]
     [Migration("20231221200935_endereco")]
-    partial class endereco
+    partial class Endereco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

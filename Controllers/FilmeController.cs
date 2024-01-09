@@ -4,6 +4,7 @@ using FilmeAPI.Data;
 using FilmeAPI.Models.Dtos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FilmeAPI.Controllers;
 
@@ -50,7 +51,7 @@ public class FilmeController : ControllerBase
 
             return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
         }
-        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema.Nome == nomeCinema)).ToList());
+        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema == null ? false : sessao.Cinema.Nome == nomeCinema)).ToList());
     }
 
     [HttpGet("{id}")]
