@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using FilmeAPI.Data;
-using FilmeAPI.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FilmeAPI;
 
@@ -10,68 +8,61 @@ namespace FilmeAPI;
 [Route("api/sessao")]
 public class SessaoController : ControllerBase
 {
-  private readonly FilmeContext _context;
+    private readonly FilmeContext _context;
 
-  private readonly IMapper _mapper;
+    private readonly IMapper _mapper;
 
-  public SessaoController(FilmeContext context, IMapper mapper) 
-  {
-    _context = context;
-    _mapper = mapper;
-  }
-
-
-  [HttpPost]
-  public IActionResult AdicionarSessao([FromBody] CreateSessaoDto sessaoDto)
-  {
-    Sessao sessao = _mapper.Map<Sessao>(sessaoDto);
-    _context.Sessaos.Add(sessao);
-    _context.SaveChanges();
-
-    return CreatedAtAction(nameof(SessaoPorId), new { filmeId = sessao.FilmeId, cinemaId = sessao.CinemaId }, sessaoDto);
-  }
-
-  [HttpGet]
-  public IEnumerable<ReadSessaoDto> TodasSessoes()
-  {
-    return _mapper.Map<List<ReadSessaoDto>>(_context.Sessaos.ToList());
-  }
-
-  [HttpGet("{filmeId}/{cinemaId}")]
-  public IActionResult SessaoPorId(int filmeId, int cinemaId)
-  {
-    Sessao? sessao = _context.Sessaos.FirstOrDefault(sessao => sessao.FilmeId == filmeId && sessao.CinemaId == cinemaId);
-    if (sessao == null)
+    public SessaoController(FilmeContext context, IMapper mapper)
     {
-      return NotFound();
+        _context = context;
+        _mapper = mapper;
     }
-    return Ok(sessao);
-  }
 
-  [HttpPut("{filmeId}/{cinemaId}")]
-  public IActionResult AtualizaSessao(int filmeId, int cinemaId, [FromBody] UpdateSessaoDto updateSessaoDto)
-  {
-    Sessao? sessao = _context.Sessaos.FirstOrDefault(s => s.FilmeId == filmeId && s.CinemaId == cinemaId);
-    if (sessao == null)
+
+    [HttpPost]
+    public IActionResult AdicionarSessao([FromBody] CreateSessaoDto sessaoDto)
     {
-      return NotFound();
+        Sessao sessao = _mapper.Map<Sessao>(sessaoDto);
+        _ = _context.Sessaos.Add(sessao);
+        _ = _context.SaveChanges();
+
+        return CreatedAtAction(nameof(SessaoPorId), new { filmeId = sessao.FilmeId, cinemaId = sessao.CinemaId }, sessaoDto);
     }
-    _mapper.Map(updateSessaoDto, sessao);
-    _context.SaveChanges();
-    return NoContent();
-  }
 
+    [HttpGet]
+    public IEnumerable<ReadSessaoDto> TodasSessoes() => _mapper.Map<List<ReadSessaoDto>>(_context.Sessaos.ToList());
 
-  [HttpDelete("{filmeId}/{sessaoId}")]
-  public IActionResult RemoveSessao(int filmeId, int sessaoId)
-  {
-    Sessao? sessao = _context.Sessaos.FirstOrDefault(s => s.FilmeId == filmeId && s.CinemaId  == sessaoId);
-    if (sessao == null)
+    [HttpGet("{filmeId}/{cinemaId}")]
+    public IActionResult SessaoPorId(int filmeId, int cinemaId)
     {
-      return NotFound();
+        Sessao? sessao = _context.Sessaos.FirstOrDefault(sessao => sessao.FilmeId == filmeId && sessao.CinemaId == cinemaId);
+        return sessao == null ? NotFound() : Ok(sessao);
     }
-    _context.Sessaos.Remove(sessao);
-    _context.SaveChanges();
-    return NoContent();
-  }
+
+    [HttpPut("{filmeId}/{cinemaId}")]
+    public IActionResult AtualizaSessao(int filmeId, int cinemaId, [FromBody] UpdateSessaoDto updateSessaoDto)
+    {
+        Sessao? sessao = _context.Sessaos.FirstOrDefault(s => s.FilmeId == filmeId && s.CinemaId == cinemaId);
+        if (sessao == null)
+        {
+            return NotFound();
+        }
+        _ = _mapper.Map(updateSessaoDto, sessao);
+        _ = _context.SaveChanges();
+        return NoContent();
+    }
+
+
+    [HttpDelete("{filmeId}/{sessaoId}")]
+    public IActionResult RemoveSessao(int filmeId, int sessaoId)
+    {
+        Sessao? sessao = _context.Sessaos.FirstOrDefault(s => s.FilmeId == filmeId && s.CinemaId == sessaoId);
+        if (sessao == null)
+        {
+            return NotFound();
+        }
+        _ = _context.Sessaos.Remove(sessao);
+        _ = _context.SaveChanges();
+        return NoContent();
+    }
 }

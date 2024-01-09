@@ -14,7 +14,7 @@ public class Cinema
 
     [Required(ErrorMessage = "O campo do nome e obrigatorio")]
     public string Nome { get; set; } = string.Empty;
-    
+
     [ForeignKey(nameof(Endereco))]
     public int EnderecoId { get; set; }
 

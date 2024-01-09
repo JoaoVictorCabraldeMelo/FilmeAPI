@@ -24,27 +24,20 @@ public class EnderecoController : ControllerBase
     public IActionResult AdicionarEndereco([FromBody] CreateEnderecoDto enderecoDto)
     {
         Endereco endereco = _mapper.Map<Endereco>(enderecoDto);
-        _context.Enderecos.Add(endereco);
-        _context.SaveChanges();
+        _ = _context.Enderecos.Add(endereco);
+        _ = _context.SaveChanges();
 
         return CreatedAtAction(nameof(EnderecoPorId), new { id = endereco.Id }, enderecoDto);
     }
 
     [HttpGet]
-    public IEnumerable<ReadEnderecoDto> TodosEnderecos()
-    {
-        return _mapper.Map<List<ReadEnderecoDto>>(_context.Enderecos.ToList());
-    }
+    public IEnumerable<ReadEnderecoDto> TodosEnderecos() => _mapper.Map<List<ReadEnderecoDto>>(_context.Enderecos.ToList());
 
     [HttpGet("{id}")]
     public IActionResult EnderecoPorId(int id)
     {
         Endereco? endereco = _context.Enderecos.FirstOrDefault(e => e.Id == id);
-        if (endereco == null)
-        {
-            return NotFound();
-        }
-        return Ok(endereco);
+        return endereco == null ? NotFound() : Ok(endereco);
     }
 
     [HttpPut("{id}")]
@@ -55,8 +48,8 @@ public class EnderecoController : ControllerBase
         {
             return NotFound();
         }
-        _mapper.Map(updateEnderecoDto, endereco);
-        _context.SaveChanges();
+        _ = _mapper.Map(updateEnderecoDto, endereco);
+        _ = _context.SaveChanges();
         return NoContent();
     }
 
@@ -69,8 +62,8 @@ public class EnderecoController : ControllerBase
         {
             return NotFound();
         }
-        _context.Enderecos.Remove(endereco);
-        _context.SaveChanges();
+        _ = _context.Enderecos.Remove(endereco);
+        _ = _context.SaveChanges();
         return NoContent();
     }
 

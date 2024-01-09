@@ -4,11 +4,11 @@ namespace FilmeAPI;
 
 public class SessaoProfile : Profile
 {
-  public SessaoProfile()
-  {
-    CreateMap<CreateSessaoDto, Sessao>();
-    CreateMap<Sessao, ReadSessaoDto>();    
-    CreateMap<Sessao, UpdateSessaoDto>();
-    CreateMap<UpdateSessaoDto, Sessao>();
-  }
+    public SessaoProfile()
+    {
+        _ = CreateMap<CreateSessaoDto, Sessao>();
+        _ = CreateMap<Sessao, ReadSessaoDto>();
+        _ = CreateMap<Sessao, UpdateSessaoDto>();
+        _ = CreateMap<UpdateSessaoDto, Sessao>();
+    }
 }

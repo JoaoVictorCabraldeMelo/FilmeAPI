@@ -4,7 +4,6 @@ using FilmeAPI.Data;
 using FilmeAPI.Models.Dtos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using System.Reflection.Metadata.Ecma335;
 
 namespace FilmeAPI.Controllers;
 
@@ -23,7 +22,7 @@ public class FilmeController : ControllerBase
     }
 
 
-    
+
     ///    <summary>
     ///        Adiciona um filme ao banco de dados
     ///    </summary>
@@ -35,10 +34,10 @@ public class FilmeController : ControllerBase
     public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
     {
         Filme filme = _map.Map<Filme>(filmeDto);
-        
-        _context.Filmes.Add(filme);
 
-        _context.SaveChanges();
+        _ = _context.Filmes.Add(filme);
+
+        _ = _context.SaveChanges();
 
         return CreatedAtAction(nameof(RecuperarFilme), new { id = filme.Id }, filme);
     }
@@ -46,33 +45,41 @@ public class FilmeController : ControllerBase
     [HttpGet]
     public IEnumerable<ReadFilmeDto> TodosFilmes([FromQuery] int pagina = 0, [FromQuery] int tamanho = 50, [FromQuery] string? nomeCinema = null)
     {
-        if (nomeCinema == null) {
+        if (nomeCinema == null)
+        {
             pagina = pagina * 10;
 
             return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
         }
-        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema == null ? false : sessao.Cinema.Nome == nomeCinema)).ToList());
+        return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema != null && sessao.Cinema.Nome == nomeCinema)).ToList());
     }
 
     [HttpGet("{id}")]
     public IActionResult RecuperarFilme(int id)
     {
-        var filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
-        if (filme == null) return NotFound(filme);
-        var filmeDto = _map.Map<ReadFilmeDto>(filme);
+        Filme? filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
+        if (filme == null)
+        {
+            return NotFound(filme);
+        }
+
+        ReadFilmeDto filmeDto = _map.Map<ReadFilmeDto>(filme);
         return Ok(filmeDto);
     }
 
     [HttpPut("{id}")]
     public IActionResult AtualizaFilme(int id, [FromBody] UpdateFilmeDto filmeDto)
     {
-        var filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
+        Filme? filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
 
-        if (filme == null) return NotFound();
+        if (filme == null)
+        {
+            return NotFound();
+        }
 
-        _map.Map(filmeDto, filme);
+        _ = _map.Map(filmeDto, filme);
 
-        _context.SaveChanges();
+        _ = _context.SaveChanges();
 
         return NoContent();
     }
@@ -80,22 +87,25 @@ public class FilmeController : ControllerBase
     [HttpPatch("{id}")]
     public IActionResult AtualizaFilmeParcial(int id, JsonPatchDocument<UpdateFilmeDto> patch)
     {
-        var filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
+        Filme? filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
 
-        if (filme == null) return NotFound();
+        if (filme == null)
+        {
+            return NotFound();
+        }
 
-        var filmeParaAtualizar = _map.Map<UpdateFilmeDto>(filme);
+        UpdateFilmeDto filmeParaAtualizar = _map.Map<UpdateFilmeDto>(filme);
 
         patch.ApplyTo(filmeParaAtualizar, ModelState);
 
-        if(!TryValidateModel(filmeParaAtualizar))
+        if (!TryValidateModel(filmeParaAtualizar))
         {
             return ValidationProblem(ModelState);
         }
 
-        _map.Map(filmeParaAtualizar, filme);
+        _ = _map.Map(filmeParaAtualizar, filme);
 
-        _context.SaveChanges();
+        _ = _context.SaveChanges();
 
         return NoContent();
     }
@@ -104,12 +114,15 @@ public class FilmeController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeletaFilme(int id)
     {
-        var filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
-        if (filme == null) return NotFound();
-        
-        _context.Remove(filme);
+        Filme? filme = _context.Filmes.FirstOrDefault(f => f.Id == id);
+        if (filme == null)
+        {
+            return NotFound();
+        }
 
-        _context.SaveChanges();
+        _ = _context.Remove(filme);
+
+        _ = _context.SaveChanges();
 
         return NoContent();
     }

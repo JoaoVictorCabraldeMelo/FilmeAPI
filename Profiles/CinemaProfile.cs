@@ -7,10 +7,10 @@ public class CinemaProfile : Profile
 {
     public CinemaProfile()
     {
-        CreateMap<CreateCinemaDto, Cinema>();
-        CreateMap<UpdateCinemaDto, Cinema>();
-        CreateMap<Cinema, UpdateCinemaDto>();
-        CreateMap<Cinema, ReadCinemaDto>()
+        _ = CreateMap<CreateCinemaDto, Cinema>();
+        _ = CreateMap<UpdateCinemaDto, Cinema>();
+        _ = CreateMap<Cinema, UpdateCinemaDto>();
+        _ = CreateMap<Cinema, ReadCinemaDto>()
             .ForMember(dto => dto.ReadEnderecoDto, opt => opt.MapFrom(cinema => cinema.Endereco))
             .ForMember(cinemaDto => cinemaDto.Sessoes, opt => opt.MapFrom(cinema => cinema.Sessoes));
     }

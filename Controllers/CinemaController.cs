@@ -25,30 +25,25 @@ public class CinemaController : ControllerBase
     public IActionResult AdicionarCinema([FromBody] CreateCinemaDto cinemaDto)
     {
         Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
-        _context.Cinemas.Add(cinema);
-        _context.SaveChanges();
+        _ = _context.Cinemas.Add(cinema);
+        _ = _context.SaveChanges();
 
-        return CreatedAtAction(nameof(CinemaPorId), new { id =  cinema.Id }, cinemaDto);
+        return CreatedAtAction(nameof(CinemaPorId), new { id = cinema.Id }, cinemaDto);
     }
 
     [HttpGet]
     public IEnumerable<ReadCinemaDto> TodosCinemas([FromQuery] int? enderecoId = null)
     {
-        if (enderecoId == null)
-            return _mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.ToList());
-
-        return _mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.FromSql($"SELECT Id, Nome, EnderecoId FROM Cinemas WHERE EnderecoId = {enderecoId}").ToList());
+        return enderecoId == null
+            ? _mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.ToList())
+            : (IEnumerable<ReadCinemaDto>)_mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.FromSql($"SELECT Id, Nome, EnderecoId FROM Cinemas WHERE EnderecoId = {enderecoId}").ToList());
     }
 
     [HttpGet("{id}")]
     public IActionResult CinemaPorId(int id)
     {
         Cinema? cinema = _context.Cinemas.FirstOrDefault(c => c.Id == id);
-        if(cinema == null)
-        {
-            return NotFound();
-        }
-        return Ok(cinema);
+        return cinema == null ? NotFound() : Ok(cinema);
     }
 
     [HttpPut("{id}")]
@@ -59,22 +54,22 @@ public class CinemaController : ControllerBase
         {
             return NotFound();
         }
-        _mapper.Map(updateCinemaDto, cinema);
-        _context.SaveChanges();
+        _ = _mapper.Map(updateCinemaDto, cinema);
+        _ = _context.SaveChanges();
         return NoContent();
     }
 
 
     [HttpDelete("{id}")]
-    public IActionResult RemoveCinema(int id) 
+    public IActionResult RemoveCinema(int id)
     {
         Cinema? cinema = _context.Cinemas.FirstOrDefault(c => c.Id == id);
         if (cinema == null)
         {
             return NotFound();
         }
-        _context.Cinemas.Remove(cinema);
-        _context.SaveChanges();
+        _ = _context.Cinemas.Remove(cinema);
+        _ = _context.SaveChanges();
         return NoContent();
     }
 }
