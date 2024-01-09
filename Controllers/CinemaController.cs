@@ -1,25 +1,24 @@
 ﻿using AutoMapper;
 using FilmeAPI.Data;
+using FilmeAPI.Models;
 using FilmeAPI.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FilmeAPI.Controllers;
 
+/// <summary>
+///  Controller Cinema
+/// </summary>
+/// <param name="context"></param>
+/// <param name="mapper"></param>
 [ApiController]
 [Route("api/cinema")]
-public class CinemaController : ControllerBase
+public class CinemaController(FilmeContext context, IMapper mapper) : ControllerBase
 {
-    private readonly FilmeContext _context;
+    private readonly FilmeContext _context = context;
 
-    private readonly IMapper _mapper;
-
-    public CinemaController(FilmeContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost]
     public IActionResult AdicionarCinema([FromBody] CreateCinemaDto cinemaDto)
@@ -32,12 +31,9 @@ public class CinemaController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ReadCinemaDto> TodosCinemas([FromQuery] int? enderecoId = null)
-    {
-        return enderecoId == null
+    public IEnumerable<ReadCinemaDto> TodosCinemas([FromQuery] int? enderecoId = null) => enderecoId == null
             ? _mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.ToList())
             : (IEnumerable<ReadCinemaDto>)_mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.FromSql($"SELECT Id, Nome, EnderecoId FROM Cinemas WHERE EnderecoId = {enderecoId}").ToList());
-    }
 
     [HttpGet("{id}")]
     public IActionResult CinemaPorId(int id)

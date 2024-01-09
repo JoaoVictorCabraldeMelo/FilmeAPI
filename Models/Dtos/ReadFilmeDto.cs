@@ -1,4 +1,4 @@
-﻿namespace FilmeAPI;
+﻿namespace FilmeAPI.Models.Dtos;
 
 public class ReadFilmeDto
 {

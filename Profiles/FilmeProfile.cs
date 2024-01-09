@@ -4,8 +4,14 @@ using FilmeAPI.Models;
 
 namespace FilmeAPI.Profiles;
 
+/// <summary>
+/// Class for mapping Filme Profile using his Dtos 
+/// </summary>
 public class FilmeProfile : Profile
 {
+    /// <summary>
+    /// Constructor for mapping filme profiles
+    /// </summary>
     public FilmeProfile()
     {
         _ = CreateMap<CreateFilmeDto, Filme>();

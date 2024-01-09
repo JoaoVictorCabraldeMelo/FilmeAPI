@@ -4,14 +4,8 @@ using Microsoft.EntityFrameworkCore;
 namespace FilmeAPI.Data;
 
 
-public class FilmeContext : DbContext
+public class FilmeContext(DbContextOptions<FilmeContext> options) : DbContext(options)
 {
-
-    public FilmeContext(DbContextOptions<FilmeContext> options) : base(options)
-    {
-
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

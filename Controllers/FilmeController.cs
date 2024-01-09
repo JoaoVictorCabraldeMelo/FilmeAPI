@@ -9,17 +9,11 @@ namespace FilmeAPI.Controllers;
 
 [ApiController]
 [Route("api/filme")]
-public class FilmeController : ControllerBase
+public class FilmeController(FilmeContext context, IMapper map) : ControllerBase
 {
-    private readonly FilmeContext _context;
+    private readonly FilmeContext _context = context;
 
-    private readonly IMapper _map;
-
-    public FilmeController(FilmeContext context, IMapper map)
-    {
-        _context = context;
-        _map = map;
-    }
+    private readonly IMapper _map = map;
 
 
 
@@ -47,7 +41,7 @@ public class FilmeController : ControllerBase
     {
         if (nomeCinema == null)
         {
-            pagina = pagina * 10;
+            pagina *= 10;
 
             return _map.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(pagina).Take(tamanho).ToList());
         }

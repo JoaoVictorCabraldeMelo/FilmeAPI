@@ -1,23 +1,18 @@
 ﻿using AutoMapper;
 using FilmeAPI.Data;
 using Microsoft.AspNetCore.Mvc;
+using FilmeAPI.Models.Dtos;
+using FilmeAPI.Models;
 
-namespace FilmeAPI;
+namespace FilmeAPI.Controllers;
 
 [ApiController]
 [Route("api/sessao")]
-public class SessaoController : ControllerBase
+public class SessaoController(FilmeContext context, IMapper mapper) : ControllerBase
 {
-    private readonly FilmeContext _context;
+    private readonly FilmeContext _context = context;
 
-    private readonly IMapper _mapper;
-
-    public SessaoController(FilmeContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost]
     public IActionResult AdicionarSessao([FromBody] CreateSessaoDto sessaoDto)

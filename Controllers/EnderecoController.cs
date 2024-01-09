@@ -8,17 +8,11 @@ namespace FilmeAPI.Controllers;
 
 [ApiController]
 [Route("api/endereco")]
-public class EnderecoController : ControllerBase
+public class EnderecoController(FilmeContext context, IMapper mapper) : ControllerBase
 {
-    private readonly FilmeContext _context;
+    private readonly FilmeContext _context = context;
 
-    private readonly IMapper _mapper;
-
-    public EnderecoController(FilmeContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
+    private readonly IMapper _mapper = mapper;
 
     [HttpPost]
     public IActionResult AdicionarEndereco([FromBody] CreateEnderecoDto enderecoDto)

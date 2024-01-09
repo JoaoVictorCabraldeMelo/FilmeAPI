@@ -1,10 +1,7 @@
-﻿
-
-using FilmeAPI.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FilmeAPI;
+namespace FilmeAPI.Models;
 
 public class Cinema
 {
